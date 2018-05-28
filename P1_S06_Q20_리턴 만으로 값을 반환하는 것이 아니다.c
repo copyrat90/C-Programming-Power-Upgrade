@@ -1,3 +1,6 @@
+// C언어의 본질은 Call by Value(값 호출).
+// 포인터도 본질은 값이므로 Call by Address(주소 호출) 후 *(지정 연산)을 통해 Call by reference(참조 호출) 흉내내기
+
 #include <stdio.h>
 #define ERR_DIVIDE_BY_ZERO -256
 
