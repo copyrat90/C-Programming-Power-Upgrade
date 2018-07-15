@@ -1,15 +1,15 @@
-/* Name : main.c	ver 1.0
+/* Name : main.c	ver 1.1
  * Content : main 함수
  * Implementation : copyrat90
  *
- * Last modified : 2018/06/29
+ * Last modified 2018/07/15
  */
 
 #include "common.h"
 #include "screenOut.h"
 #include "phoneFunc.h"
 
-enum { INPUT = 1, SHOWALL, QUIT };
+enum { INPUT = 1, SHOWALL, SEARCH, DELETE, QUIT };
 
 /* 함수 : int main(void)
  * 기능 : 사용자 선택 처리
@@ -35,6 +35,14 @@ int main(void)
 
 		case SHOWALL:
 			ShowAllData();
+			break;
+
+		case SEARCH:
+			SearchPhoneData();
+			break;
+
+		case DELETE:
+			DeletePhoneData();
 			break;
 		}
 

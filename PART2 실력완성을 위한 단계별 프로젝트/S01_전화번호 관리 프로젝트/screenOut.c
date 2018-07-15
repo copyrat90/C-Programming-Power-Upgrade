@@ -1,8 +1,8 @@
-/* Name : screenOut.c	ver 1.0
+/* Name : screenOut.c	ver 1.1
  * Content : 콘솔 출력을 위한 함수 정의
  * Implementation : copyrat90
  *
- * Last modified 2018/06/29
+ * Last modified 2018/07/15
  */
 
 #include "common.h"
@@ -19,7 +19,9 @@ void ShowMenu(void)
 	printf("────────── 메  뉴 ──────────\n");
 	printf(" 1. 전화번호 입력\n");
 	printf(" 2. 전체 정보 출력\n");
-	printf(" 3. 종료\n");
+	printf(" 3. 전화번호 검색\n");
+	printf(" 4. 전화번호 삭제\n");
+	printf(" 5. 종료\n");
 	printf("────────────────────────────\n");
 	printf("선택>> ");
 }

@@ -1,8 +1,8 @@
-/* Name : phoneFunc	ver 1.1
+/* Name : phoneFunc	ver 1.2
  * Content : 전화번호 컨트롤 함수
  * Implementation : copyrat90
  * 
- * Last modified 2018/06/29
+ * Last modified 2018/07/15
  */
 
 #include "common.h"
@@ -55,4 +55,74 @@ void ShowAllData(void)
 	puts("출력이 완료되었습니다.");
 	getchar();
 }
+
+/* 함수 : void SearchPhoneData(void);
+ * 기능 : 이름을 입력받아 데이터를 검색 후 출력
+ * 반환 : void
+ *
+ */
+void SearchPhoneData(void)
+{
+	char searchName[NAME_LEN];
+
+	if (numOfData == 0)
+	{
+		puts("저장된 전화번호가 없습니다!");
+		getchar();
+		return;
+	}
+
+	fputs("찾는 이름은? ", stdout);
+	gets_s(searchName, sizeof(searchName));
+
+	for (int i = 0; i < numOfData; i++)
+		if (strcmp(searchName, phoneList[i].name) == 0)
+		{
+			ShowPhoneInfo(phoneList[i]);
+			puts("검색이 완료되었습니다.");
+			getchar();
+			return;
+		}
+
+	puts("등록되지 않은 이름입니다.");
+	getchar();
+	return;
+}
+
+/* 함수 : void DeletePhoneData(void)
+ * 기능 : 이름을 입력 받아 데이터를 삭제
+ * 반환 : void
+ *
+ */
+void DeletePhoneData(void)
+{
+	if (numOfData == 0)
+	{
+		puts("저장된 전화번호가 없습니다!");
+		getchar();
+		return;
+	}
+
+	char delName[NAME_LEN];
+	fputs("찾는 이름은? ", stdout);
+	gets_s(delName, sizeof(delName));
+
+	int i, j;
+	for (i = 0; i < numOfData; i++)
+		if (strcmp(delName, phoneList[i].name) == 0)
+		{
+			for (j = i; j < numOfData - 1; j++)
+				phoneList[j] = phoneList[j + 1];
+
+			numOfData--;
+			puts("삭제가 완료되었습니다.");
+			getchar();
+			return;
+		}
+
+	puts("등록되지 않은 이름입니다.");
+	getchar();
+	return;
+}
+
 // end of file
