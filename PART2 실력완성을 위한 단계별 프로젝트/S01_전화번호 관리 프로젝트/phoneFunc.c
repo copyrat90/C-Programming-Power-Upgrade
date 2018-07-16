@@ -1,8 +1,8 @@
-/* Name : phoneFunc	ver 1.2
+/* Name : phoneFunc	ver 1.3
  * Content : 전화번호 컨트롤 함수
  * Implementation : copyrat90
  * 
- * Last modified 2018/07/15
+ * Last modified 2018/07/16
  */
 
 #include "common.h"
@@ -12,7 +12,7 @@
 #define LIST_NUM	100
 
 int numOfData = 0;
-phoneData phoneList[LIST_NUM];
+phoneData* phoneList[LIST_NUM];
 
 /* 함수 : void InputPhoneData(void)
  * 기능 : 전화번호 관련 데이터 입력 받아서 저장
@@ -21,7 +21,7 @@ phoneData phoneList[LIST_NUM];
  */
 void InputPhoneData(void)
 {
-	phoneData phoneBuff;
+	phoneData *pData = NULL;
 
 	if (numOfData >= LIST_NUM)
 	{
@@ -29,13 +29,15 @@ void InputPhoneData(void)
 		return;
 	}
 
+	pData = (phoneData*)malloc(sizeof(phoneData));
+
 	fputs("이름 입력 : ", stdout);
-	gets_s(phoneBuff.name, sizeof(phoneBuff.name));
+	gets_s(pData->name, sizeof(pData->name));
 
 	fputs("전화번호 입력 : ", stdout);
-	gets_s(phoneBuff.phoneNum, sizeof(phoneBuff.phoneNum));
+	gets_s(pData->phoneNum, sizeof(pData->phoneNum));
 
-	phoneList[numOfData] = phoneBuff;
+	phoneList[numOfData] = pData;
 	numOfData++;
 
 	puts("입력이 완료되었습니다.");
@@ -50,7 +52,7 @@ void InputPhoneData(void)
 void ShowAllData(void)
 {
 	for (int i = 0; i < numOfData; i++)
-		ShowPhoneInfo(phoneList[i]);
+		ShowPhoneInfoByPtr(phoneList[i]);
 
 	puts("출력이 완료되었습니다.");
 	getchar();
@@ -76,9 +78,9 @@ void SearchPhoneData(void)
 	gets_s(searchName, sizeof(searchName));
 
 	for (int i = 0; i < numOfData; i++)
-		if (strcmp(searchName, phoneList[i].name) == 0)
+		if (strcmp(searchName, phoneList[i]->name) == 0)
 		{
-			ShowPhoneInfo(phoneList[i]);
+			ShowPhoneInfoByPtr(phoneList[i]);
 			puts("검색이 완료되었습니다.");
 			getchar();
 			return;
@@ -109,8 +111,10 @@ void DeletePhoneData(void)
 
 	int i, j;
 	for (i = 0; i < numOfData; i++)
-		if (strcmp(delName, phoneList[i].name) == 0)
+		if (strcmp(delName, phoneList[i]->name) == 0)
 		{
+			free(phoneList[i]);
+
 			for (j = i; j < numOfData - 1; j++)
 				phoneList[j] = phoneList[j + 1];
 
