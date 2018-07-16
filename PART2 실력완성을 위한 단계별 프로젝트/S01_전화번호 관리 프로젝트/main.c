@@ -1,4 +1,4 @@
-/* Name : main.c	ver 1.3
+/* Name : main.c	ver 1.4
  * Content : main 함수
  * Implementation : copyrat90
  *
@@ -19,7 +19,7 @@ enum { INPUT = 1, SHOWALL, SEARCH, DELETE, CHANGE, QUIT };
 int main(void)
 {
 	int inputMenu = 0;
-	LoadDataFromFile();
+	LoadDataFromFileInStruct();
 
 	while (1)
 	{
@@ -53,7 +53,7 @@ int main(void)
 
 		if (inputMenu == QUIT)
 		{
-			StoreDataToFile();
+			StoreDataToFileInStruct();
 			puts("이용해 주셔서 고마워요~");
 			break;
 		}

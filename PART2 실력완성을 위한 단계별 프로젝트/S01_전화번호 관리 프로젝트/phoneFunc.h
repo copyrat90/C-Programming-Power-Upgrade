@@ -1,4 +1,4 @@
-/* Name : phoneFunc.h	ver 1.3
+/* Name : phoneFunc.h	ver 1.4
  * Content : 전화번호 컨트롤 함수들의 선언
  * Implementation : copyrat90
  *
@@ -19,6 +19,8 @@ void ChangePhoneData(void);
 
 void StoreDataToFile(void);
 void LoadDataFromFile(void);
+void StoreDataToFileInStruct(void);
+void LoadDataFromFileInStruct(void);
 
 #endif
 // end of file

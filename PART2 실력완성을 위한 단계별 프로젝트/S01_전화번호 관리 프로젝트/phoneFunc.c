@@ -1,4 +1,4 @@
-/* Name : phoneFunc	ver 1.6
+/* Name : phoneFunc	ver 1.7
  * Content : 전화번호 컨트롤 함수
  * Implementation : copyrat90
  * 
@@ -8,6 +8,7 @@
 #include "common.h"
 #include "phoneData.h"
 #include "screenOut.h"
+#include "phoneFunc.h"
 
 #define LIST_NUM	100
 
@@ -48,6 +49,8 @@ void InputPhoneData(void)
 
 	phoneList[numOfData] = pData;
 	numOfData++;
+
+	StoreDataToFileInStruct();
 
 	puts("입력이 완료되었습니다.");
 	getchar();
@@ -159,6 +162,8 @@ void DeletePhoneData(void)
 		phoneList[i] = phoneList[i + 1];
 	numOfData--;
 
+	StoreDataToFileInStruct();
+
 	puts("삭제가 완료되었습니다.");
 	getchar();
 	return;
@@ -219,8 +224,9 @@ void ChangePhoneData(void)
 	char newPhoneNum[PHONE_LEN];
 	fputs("변경할 전화번호는? ", stdout);
 	gets_s(newPhoneNum, sizeof(newPhoneNum));
-
 	strcpy_s(phoneList[changeIdx]->phoneNum, sizeof(phoneList[changeIdx]->phoneNum), newPhoneNum);
+
+	StoreDataToFileInStruct();
 	puts("변경이 완료되었습니다.");
 	getchar();
 	return;
@@ -289,4 +295,62 @@ void LoadDataFromFile(void)
 
 	fclose(fp);
 }
+
+/* 함수 : void StoreDataToFileInStruct(void);
+ * 기능 : 구조체 변수 단위로 파일에 데이터 저장
+ * 반환 : void
+ *
+ */
+void StoreDataToFileInStruct(void)
+{
+	FILE *fp = NULL;
+	fopen_s(&fp, "phoneDataStruct.dat", "wb");
+	if (fp == NULL)
+	{
+		puts("'phoneDataStruct.dat' 파일을 열 수 없었습니다.\n파일 저장 실패!");
+		return;
+	}
+
+	for (int i = 0; i < numOfData; i++)
+		fwrite(phoneList[i], sizeof(phoneData), 1, fp);
+
+	fclose(fp);
+}
+
+/* 함수 : void LoadDataFromFileInStruct(void);
+ * 기능 : 구조체 변수 단위로 데이터 복원
+ * 반환 : void
+ *
+ */
+void LoadDataFromFileInStruct(void)
+{
+	FILE *fp = NULL;
+	fopen_s(&fp, "phoneDataStruct.dat", "rb");
+	if (fp == NULL)
+		return;
+
+#ifdef _DEBUG
+	int nCnt = 0;
+#endif
+
+	while (1)
+	{
+		phoneList[numOfData] = (phoneData*)malloc(sizeof(phoneData));
+		fread_s(phoneList[numOfData], sizeof(phoneData), sizeof(phoneData), 1, fp);
+		numOfData++;
+
+#ifdef _DEBUG
+		printf("feof(fp) == %d\tnCnt == %d\n", feof(fp), ++nCnt);
+#endif
+
+		if (feof(fp) != 0)
+		{
+			free(phoneList[numOfData--]);
+			break;
+		}
+	}
+
+	fclose(fp);
+}
+
 // end of file
