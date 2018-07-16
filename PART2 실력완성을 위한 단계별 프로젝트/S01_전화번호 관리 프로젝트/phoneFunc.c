@@ -1,4 +1,4 @@
-/* Name : phoneFunc	ver 1.3
+/* Name : phoneFunc	ver 1.4
  * Content : 전화번호 컨트롤 함수
  * Implementation : copyrat90
  * 
@@ -36,6 +36,15 @@ void InputPhoneData(void)
 
 	fputs("전화번호 입력 : ", stdout);
 	gets_s(pData->phoneNum, sizeof(pData->phoneNum));
+
+	for (int i = 0; i < numOfData; i++)
+		if (!strcmp(phoneList[i]->phoneNum, pData->phoneNum))
+		{
+			free(pData);
+			puts("이미 입력된 전화번호입니다.");
+			getchar();
+			return;
+		}
 
 	phoneList[numOfData] = pData;
 	numOfData++;
@@ -77,16 +86,18 @@ void SearchPhoneData(void)
 	fputs("찾는 이름은? ", stdout);
 	gets_s(searchName, sizeof(searchName));
 
+	int dataCnt = 0;
 	for (int i = 0; i < numOfData; i++)
 		if (strcmp(searchName, phoneList[i]->name) == 0)
 		{
 			ShowPhoneInfoByPtr(phoneList[i]);
-			puts("검색이 완료되었습니다.");
-			getchar();
-			return;
+			dataCnt++;
 		}
 
-	puts("등록되지 않은 이름입니다.");
+	if (dataCnt == 0)
+		puts("찾는 이름의 데이터가 존재하지 않습니다.");
+	else
+		puts("검색이 완료되었습니다.");
 	getchar();
 	return;
 }
@@ -109,22 +120,46 @@ void DeletePhoneData(void)
 	fputs("찾는 이름은? ", stdout);
 	gets_s(delName, sizeof(delName));
 
-	int i, j;
+	int idxOfMatchingData[LIST_NUM];
+	int matchCnt = 0;
+	int i;
 	for (i = 0; i < numOfData; i++)
-		if (strcmp(delName, phoneList[i]->name) == 0)
+		if (!strcmp(phoneList[i]->name, delName))
+			idxOfMatchingData[matchCnt++] = i;
+
+	int delIdx;
+	if (matchCnt == 0)
+	{
+		puts("찾는 이름의 데이터가 존재하지 않습니다.");
+		getchar();
+		return;
+	}
+	else if (matchCnt == 1)
+	{
+		delIdx = idxOfMatchingData[0];
+	}
+	else
+	{
+		for (i = 0; i < matchCnt; i++)
 		{
-			free(phoneList[i]);
-
-			for (j = i; j < numOfData - 1; j++)
-				phoneList[j] = phoneList[j + 1];
-
-			numOfData--;
-			puts("삭제가 완료되었습니다.");
-			getchar();
-			return;
+			printf("NUM. %d\n", i + 1);
+			ShowPhoneInfoByPtr(phoneList[idxOfMatchingData[i]]);
 		}
 
-	puts("등록되지 않은 이름입니다.");
+		int choice;
+		fputs("선택: ", stdout);
+		scanf_s("%d", &choice);
+		while (getchar() != '\n');
+
+		delIdx = idxOfMatchingData[choice - 1];
+	}
+
+	free(phoneList[delIdx]);
+	for (i = delIdx; i < numOfData - 1; i++)
+		phoneList[i] = phoneList[i + 1];
+	numOfData--;
+
+	puts("삭제가 완료되었습니다.");
 	getchar();
 	return;
 }
