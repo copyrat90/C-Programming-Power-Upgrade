@@ -1,4 +1,4 @@
-/* Name : phoneFunc	ver 1.5
+/* Name : phoneFunc	ver 1.6
  * Content : 전화번호 컨트롤 함수
  * Implementation : copyrat90
  * 
@@ -160,6 +160,68 @@ void DeletePhoneData(void)
 	numOfData--;
 
 	puts("삭제가 완료되었습니다.");
+	getchar();
+	return;
+}
+
+/* 함수 : void ChangePhoneData(void)
+ * 기능 : 이름을 입력받아 전화번호를 변경
+ * 반환 : void
+ *
+ */
+void ChangePhoneData(void)
+{
+	if (numOfData == 0)
+	{
+		puts("저장된 전화번호가 없습니다!");
+		getchar();
+		return;
+	}
+
+	char changeName[NAME_LEN];
+	fputs("변경 대상의 이름은? ", stdout);
+	gets_s(changeName, sizeof(changeName));
+
+	int idxOfMatchingData[LIST_NUM];
+	int matchCnt = 0;
+	int i;
+	for (i = 0; i < numOfData; i++)
+		if (!strcmp(phoneList[i]->name, changeName))
+			idxOfMatchingData[matchCnt++] = i;
+
+	int changeIdx;
+	if (matchCnt == 0)
+	{
+		puts("변경 대상 이름이 존재하지 않습니다.");
+		getchar();
+		return;
+	}
+	else if (matchCnt == 1)
+	{
+		changeIdx = idxOfMatchingData[0];
+	}
+	else
+	{
+		for (i = 0; i < matchCnt; i++)
+		{
+			printf("NUM. %d\n", i + 1);
+			ShowPhoneInfoByPtr(phoneList[idxOfMatchingData[i]]);
+		}
+
+		int choice;
+		fputs("선택: ", stdout);
+		scanf_s("%d", &choice);
+		while (getchar() != '\n');
+
+		changeIdx = idxOfMatchingData[choice - 1];
+	}
+
+	char newPhoneNum[PHONE_LEN];
+	fputs("변경할 전화번호는? ", stdout);
+	gets_s(newPhoneNum, sizeof(newPhoneNum));
+
+	strcpy_s(phoneList[changeIdx]->phoneNum, sizeof(phoneList[changeIdx]->phoneNum), newPhoneNum);
+	puts("변경이 완료되었습니다.");
 	getchar();
 	return;
 }
