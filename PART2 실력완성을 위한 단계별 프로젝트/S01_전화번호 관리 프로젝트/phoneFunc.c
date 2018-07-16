@@ -1,4 +1,4 @@
-/* Name : phoneFunc	ver 1.4
+/* Name : phoneFunc	ver 1.5
  * Content : 전화번호 컨트롤 함수
  * Implementation : copyrat90
  * 
@@ -164,4 +164,67 @@ void DeletePhoneData(void)
 	return;
 }
 
+/* 함수 : void StoreDataToFile(void);
+ * 기능 : 종료 직전 파일에 데이터 저장
+ * 반환 : void
+ *
+ */
+void StoreDataToFile(void)
+{
+	FILE *fp = NULL;
+	fopen_s(&fp, "phoneData.dat", "w");
+	if (fp == NULL)
+	{
+		puts("'phoneData.dat' 파일을 열 수 없었습니다.\n파일 저장 실패!");
+		return;
+	}
+	
+	// 개수 입력
+	fwrite(&numOfData, sizeof(int), 1, fp);
+
+	for (int i = 0; i < numOfData; i++)
+	{
+		fprintf_s(fp, "%s\n%s\n", phoneList[i]->name, phoneList[i]->phoneNum);
+		//fputs(phoneList[i]->name, fp);
+		//fputc('\n', fp);
+		//fputs(phoneList[i]->phoneNum, fp);
+		//fputc('\n', fp);
+
+		free(phoneList[i]);
+	}
+
+	fclose(fp);
+}
+
+/* 함수 : void LoadDataFromFile(void);
+ * 기능 : 실행 직후 파일로부터 데이터 복원
+ * 반환 : void
+ *
+ */
+void LoadDataFromFile(void)
+{
+	FILE *fp = NULL;
+	fopen_s(&fp, "phoneData.dat", "r");
+	if (fp == NULL)
+		return;
+
+	fread_s(&numOfData, sizeof(numOfData), sizeof(int), 1, fp);
+
+	int newlineIdx;
+	for (int i = 0; i < numOfData; i++)
+	{
+		phoneList[i] = (phoneData*)malloc(sizeof(phoneData));
+		fgets(phoneList[i]->name, NAME_LEN, fp);
+		// 구분자 '\n' 삭제
+		newlineIdx = strlen(phoneList[i]->name) - 1;
+		phoneList[i]->name[newlineIdx] = '\0'; 
+
+		fgets(phoneList[i]->phoneNum, PHONE_LEN, fp);
+		// 구분자 '\n' 삭제
+		newlineIdx = strlen(phoneList[i]->phoneNum) - 1;
+		phoneList[i]->phoneNum[newlineIdx] = '\0';
+	}
+
+	fclose(fp);
+}
 // end of file

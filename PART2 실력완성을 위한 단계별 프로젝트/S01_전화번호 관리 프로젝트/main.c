@@ -1,8 +1,8 @@
-/* Name : main.c	ver 1.1
+/* Name : main.c	ver 1.2
  * Content : main 함수
  * Implementation : copyrat90
  *
- * Last modified 2018/07/15
+ * Last modified 2018/07/16
  */
 
 #include "common.h"
@@ -19,6 +19,7 @@ enum { INPUT = 1, SHOWALL, SEARCH, DELETE, QUIT };
 int main(void)
 {
 	int inputMenu = 0;
+	LoadDataFromFile();
 
 	while (1)
 	{
@@ -48,6 +49,7 @@ int main(void)
 
 		if (inputMenu == QUIT)
 		{
+			StoreDataToFile();
 			puts("이용해 주셔서 고마워요~");
 			break;
 		}
