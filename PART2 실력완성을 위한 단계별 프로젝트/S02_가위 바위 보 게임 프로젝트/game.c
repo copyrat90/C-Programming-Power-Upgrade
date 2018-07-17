@@ -1,4 +1,4 @@
-/* Name : game.c	ver 2.0
+/* Name : game.c	ver 2.1
  * Content : 게임 관련 함수 정의
  * Implementation : copyrat90
  *
@@ -8,6 +8,7 @@
 #include <time.h>
 #include "common.h"
 #include "game.h"
+#include "gameTimes.h"
 
 /* 함	수 : int ChoiceOfCom(void)
  * 기	능 : 무작위 값을 반환
@@ -30,14 +31,14 @@ int ChoiceOfMe(void)
 	int nChoice;
 	while (1)
 	{
-		printf("가위(%d) 바위(%d) 보(%d) 선택? ", SCISSORS, ROCK, PAPER);
+		printf("가위(%d) 바위(%d) 보(%d) 종료(%d) 선택? ", SCISSORS, ROCK, PAPER, QUIT);
 		scanf_s("%d", &nChoice);
 		while (getchar() != '\n');
 
-		if (nChoice == SCISSORS || nChoice == ROCK || nChoice == PAPER)
+		if (1 <= nChoice && nChoice <= 4)
 			break;
 
-		printf("%d, %d, %d 만 입력 가능합니다.\n\n", SCISSORS, ROCK, PAPER);
+		puts("1~4 사이 숫자만 입력 가능합니다.\n");
 	}
 
 	return nChoice;
@@ -51,19 +52,22 @@ int ChoiceOfMe(void)
 void WhoIsWinner(int com, int you)
 {
 	int outcome = you - com;
+	IncreasePlayCnt();
+
 	switch (outcome)
 	{
 	case 0:
 		puts("비겼습니다.");
-		break;
+		return;
 
 	case 1: case -2:
 		puts("당신이 승자입니다!");
-		break;
+		IncreaseWinCnt();
+		return;
 
 	default:
 		puts("컴퓨터가 승자이군요!");
-		break;
+		return;
 	}
 }
 
@@ -89,5 +93,7 @@ void ShowRSP(int rsp)
 		break;
 	}
 }
+
+
 
 // end of file
