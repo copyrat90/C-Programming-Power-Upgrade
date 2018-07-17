@@ -1,4 +1,4 @@
-/* Name : game.h	ver 2.0
+/* Name : game.h	ver 2.1
  * Content : 게임 관련 함수 선언
  * Implementation : copyrat90
  *
@@ -8,7 +8,7 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
-enum { SCISSORS = 1, ROCK, PAPER };
+enum { SCISSORS = 1, ROCK, PAPER, QUIT };
 
 int ChoiceOfCom(void);
 int ChoiceOfMe(void);
