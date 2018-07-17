@@ -1,4 +1,4 @@
-/* Name : game.c	ver 2.1
+/* Name : game.c	ver 2.2
  * Content : 게임 관련 함수 정의
  * Implementation : copyrat90
  *
@@ -9,6 +9,7 @@
 #include "common.h"
 #include "game.h"
 #include "gameTimes.h"
+#include "gameMoney.h"
 
 /* 함	수 : int ChoiceOfCom(void)
  * 기	능 : 무작위 값을 반환
@@ -63,10 +64,12 @@ void WhoIsWinner(int com, int you)
 	case 1: case -2:
 		puts("당신이 승자입니다!");
 		IncreaseWinCnt();
+		PlayerEarnMoney();
 		return;
 
 	default:
 		puts("컴퓨터가 승자이군요!");
+		PlayerLoseMoney();
 		return;
 	}
 }

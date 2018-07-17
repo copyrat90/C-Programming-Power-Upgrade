@@ -1,4 +1,4 @@
-/* Name : main.c	ver 2.1
+/* Name : main.c	ver 2.2
  * Content : 게임 main 함수
  * Implementation : copyrat90
  *
@@ -8,10 +8,16 @@
 #include "common.h"
 #include "game.h"
 #include "gameTimes.h"
+#include "gameMoney.h"
 
 int main(void)
 {
-	int com, you;
+	int com, you, playerMoney, comMoney;
+
+	SetPlayerMoney(1000);
+	SetComMoney(1000);
+	SetBettingMoney(200);
+	
 	puts("자! 게임을 시작합니다.\n");
 
 	while (1)
@@ -35,7 +41,12 @@ int main(void)
 		ShowRSP(you);
 		putchar('\n');
 
-		printf("승률: %d %%\n\n", GetIntWinningRate());
+		printf("승률: %d %%\n", GetIntWinningRate());
+		printf("게이머 머니: %d\n", playerMoney = GetPlayerMoney());
+		printf("컴퓨터 머니: %d\n\n", comMoney = GetComMoney());
+
+		if (playerMoney <= 0 || comMoney <= 0)
+			break;
 	}
 
 	puts("◇◇◇◇◇◇ 최종 결과 ◇◇◇◇◇◇");
