@@ -1,4 +1,4 @@
-/* Name : main.c	ver 2.2
+/* Name : main.c	ver 2.3
  * Content : 게임 main 함수
  * Implementation : copyrat90
  *
@@ -14,14 +14,18 @@ int main(void)
 {
 	int com, you, playerMoney, comMoney;
 
-	SetPlayerMoney(1000);
-	SetComMoney(1000);
-	SetBettingMoney(200);
-	
 	puts("자! 게임을 시작합니다.\n");
+
+	SetComMoney(1000);
+
+	UserInputPlayerMoney();
+	printf("당신의 게임 머니: %d\n", GetPlayerMoney());
+	printf("컴퓨터 게임 머니: %d\n\n", GetComMoney());
 
 	while (1)
 	{
+		UserInputBettingMoney();
+
 		puts("☆☆☆☆☆☆ 대결! ☆☆☆☆☆☆!!");
 		com = ChoiceOfCom();
 		you = ChoiceOfMe();

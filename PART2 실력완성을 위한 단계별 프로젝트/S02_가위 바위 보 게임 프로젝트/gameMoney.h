@@ -1,4 +1,4 @@
-/* Name : gameMoney.h	ver 1.0
+/* Name : gameMoney.h	ver 1.1
  * Content : 게임머니 함수 선언
  * Implementation : copyrat90
  *
@@ -18,5 +18,8 @@ void SetComMoney(int money);
 
 void PlayerEarnMoney(void);
 void PlayerLoseMoney(void);
+
+void UserInputPlayerMoney(void);
+void UserInputBettingMoney(void);
 
 #endif
