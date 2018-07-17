@@ -1,4 +1,4 @@
-/* Name : main.c	ver 1.0 
+/* Name : main.c	ver 2.0
  * Content : 게임 main 함수
  * Implementation : copyrat90
  *
@@ -21,12 +21,12 @@ int main(void)
 	puts("★★★★★★ 결과! ★★★★★★!!");
 	WhoIsWinner(com, you);
 
-	printf("▷ 컴퓨터의 선택은 %d\n", com);
+	fputs("컴퓨터의 선택: ", stdout);
+	ShowRSP(com);
+	putchar('\n');
 
-	if (you == EVEN)
-		puts("▷ 당신의 선택은 짝수.");
-	else
-		puts("▷ 당신의 선택은 홀수.");
+	fputs("당신의 선택: ", stdout);
+	ShowRSP(you);
 
 	putchar('\n');
 	return 0;
